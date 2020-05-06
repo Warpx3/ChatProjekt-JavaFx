@@ -92,7 +92,10 @@ public class ClientProxy implements Runnable
 						break;
 					case "privateNachricht":
 						PrivateNachricht pn = (PrivateNachricht) o;
-						aServer.privateNachrichtSenden(pn);
+						aServer.privateObjectSenden(pn);
+						break;
+					case "Bild":
+						aServer.privateObjectSenden(o);
 						break;
 					default: break;
 				}
@@ -124,7 +127,7 @@ public class ClientProxy implements Runnable
 		}
 		catch (IOException e)
 		{
-			System.out.println("Empfänger nicht erreichbar!");
+			System.out.println("Empfï¿½nger nicht erreichbar!");
 		}
 	}
 

@@ -10,13 +10,7 @@ import java.net.ServerSocket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
-import client.AktiveNutzer;
-import client.AktiveNutzerUpdate;
-import client.AnmeldeBestaetigung;
-import client.AnmeldeObjekt;
-import client.Nickname;
-import client.PrivateNachricht;
-import client.Registrierung;
+import client.*;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
@@ -253,14 +247,34 @@ public class ServerControl extends Thread implements Serializable
 		clientProxyListe.remove(temp);
 	}
 	
-	public void privateNachrichtSenden(PrivateNachricht pn)
+	public void privateObjectSenden(Object o)
 	{
-		for(ClientProxy c : clientProxyListe)
-		{
-			if(c != null && c.getNick().getEmail().equalsIgnoreCase(pn.getEmpfaenger().getEmail()))
-			{
-				c.sendeObject(pn);
+		try {
+			Transport t = (Transport) o;
+
+			if (t != null) {
+				switch (t.getIdentifier()) {
+					case "privateNachricht":
+						PrivateNachricht pn = (PrivateNachricht) o;
+						for (ClientProxy c : clientProxyListe) {
+							if (c != null && c.getNick().getEmail().equalsIgnoreCase(pn.getEmpfaenger().getEmail())) {
+								c.sendeObject(o);
+							}
+						}
+						break;
+					case "Bild":
+						Bild bi = (Bild) o;
+						for (ClientProxy c : clientProxyListe) {
+							if (c != null && c.getNick().getEmail().equalsIgnoreCase(bi.getEmpfaenger().getEmail())) {
+								c.sendeObject(o);
+							}
+						}
+						break;
+				}
 			}
+		}catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 	

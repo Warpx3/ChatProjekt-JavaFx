@@ -38,7 +38,7 @@ public class Nachricht extends Transport implements Serializable
 	@Override
 	public String toString()
 	{
-		return nachricht;
+		return name+": " + nachricht;
 	}
 	
 }
