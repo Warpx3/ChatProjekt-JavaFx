@@ -45,15 +45,21 @@ public class Spamschutz
     {
         boolean erlaubt;
 
-        if(anzahlNachrichten < begrenzungNachrichten && LocalTime.now().isBefore(grenze))
+        anzahlNachrichten++;
+
+        if(anzahlNachrichten <= begrenzungNachrichten && LocalTime.now().isBefore(grenze))
         {
             erlaubt = true;
+        }
+        else if(LocalTime.now().isAfter(grenze))
+        {
+            erlaubt = true;
+            resetAnzahlNachrichten();
         }
         else
         {
             erlaubt = false;
         }
-        anzahlNachrichten++;
 
         if(!erlaubt)
         {
