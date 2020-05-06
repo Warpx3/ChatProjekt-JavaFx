@@ -52,20 +52,13 @@ public class Spamschutz
         else
         {
             erlaubt = false;
-            if(!flag)
-            {
-                timeout = LocalTime.now().plusSeconds(timeoutSekunden);
-                flag = true;
-            }
         }
         anzahlNachrichten++;
 
-        if(!erlaubt && LocalTime.now().isAfter(timeout))
+        if(!erlaubt)
         {
             resetAnzahlNachrichten();
-            flag = false;
         }
-
         return erlaubt;
     }
     public void resetAnzahlNachrichten()

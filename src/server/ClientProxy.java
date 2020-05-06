@@ -112,44 +112,22 @@ public class ClientProxy implements Runnable
 								aServer.broadcast(n);
 								break;
 							case "privateNachricht":
-								PrivateNachricht pn = (PrivateNachricht) o;
-								aServer.privateNachrichtSenden(pn);
+								aServer.privateObjectSenden(o);
+								break;
+							case "Bild":
+								aServer.privateObjectSenden(o);
 								break;
 							default: break;
 						}
 					}
 					else
 					{
+
 						Spamblock block = new Spamblock(schutz.getTimeoutSekunden());
 						aServer.spamschutzNachricht(block,this);
 					}
 				}
-/*
-				switch(t.getIdentifier()) {
-					case "Nachricht":
-						Nachricht n = (Nachricht) o;
-						aServer.broadcast(n);
-						break;
-					case "Registrierung":
-						Registrierung reg = (Registrierung) o;
-						aServer.registrierungPruefen(reg);
-						break;
-					case "AnmeldeObjekt":
-						ao = (AnmeldeObjekt) o;
-						aServer.anmelden(ao);
-						break;
-					case "privateNachricht":
-						PrivateNachricht pn = (PrivateNachricht) o;
-						aServer.privateObjectSenden(pn);
-						break;
-					case "Bild":
-						aServer.privateObjectSenden(o);
-						break;
-					default:
-						break;
-				}
 
- */
 			}
 		}
 		catch (ClassNotFoundException | IOException e)

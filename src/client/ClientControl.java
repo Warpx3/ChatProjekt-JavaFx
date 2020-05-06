@@ -3,10 +3,12 @@ package client;
 import javax.swing.*;
 
 import javafx.application.Platform;
+import javafx.scene.control.ScrollPane;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ClientControl implements Runnable
@@ -123,6 +125,32 @@ public class ClientControl implements Runnable
 					case "privateNachricht":
 						PrivateNachricht pn = (PrivateNachricht) o;
 						guiController.itemsZurListeHinzufuegen(clientPrivatOeffnen(pn.getAbsender()).getList_fluesterNachricht(), pn);
+						break;
+					case "Spam":
+						Spamblock block = (Spamblock) o;
+						guiController.getTextFieldNachricht().setDisable(true);
+						guiController.getBtnSenden().setDisable(true);
+
+
+						Thread timer = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								System.out.println("Bin im Thread!");
+								try
+								{
+									Thread.sleep((block.getTimeout()*1000));
+								}
+								catch(InterruptedException exp)
+								{
+									exp.printStackTrace();
+								}
+
+								guiController.getTextFieldNachricht().setDisable(false);
+								guiController.getBtnSenden().setDisable(false);
+							}
+						});
+						timer.start();
+
 						break;
 					default: break;
 				}

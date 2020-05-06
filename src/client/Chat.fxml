@@ -10,6 +10,6 @@
       <TextField fx:id="textFieldNachricht" layoutX="14.0" layoutY="439.0" onAction="#sendeNachricht" prefHeight="25.0" prefWidth="348.0" promptText="Nachricht" />
       <ListView fx:id="listView_Nachrichten" layoutX="14.0" layoutY="14.0" prefHeight="419.0" prefWidth="348.0" />
       <ListView fx:id="listView_angemeldeteNutzer" layoutX="366.0" layoutY="14.0" onMouseClicked="#clientPrivatOeffnen" prefHeight="419.0" prefWidth="164.0" />
-      <Button fx:id="button_Senden" layoutX="366.0" layoutY="439.0" mnemonicParsing="false" onMouseClicked="#sendeNachricht" prefHeight="25.0" prefWidth="164.0" text="Senden" />
+      <Button fx:id="btnSenden" layoutX="366.0" layoutY="439.0" mnemonicParsing="false" onMouseClicked="#sendeNachricht" prefHeight="25.0" prefWidth="164.0" text="Senden" />
    </children>
 </AnchorPane>
