@@ -263,6 +263,11 @@ public class ServerControl extends Thread implements Serializable
 			}
 		}
 	}
+
+	public void spamschutzNachricht(Object o,ClientProxy proxy)
+	{
+		proxy.sendeObject(o);
+	}
 	
 	public void convertListViewToArrayList(ListView<Nickname> listView)
 	{
