@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class GuiControllerPrivat
@@ -14,7 +15,9 @@ public class GuiControllerPrivat
 		private TextField textField_fluesterNachricht;
 		@FXML
 		private ListView list_fluesterNachricht;
-		
+		@FXML
+		private Button btn_Senden;
+
 		private Nickname empfaenger;
 		private GuiController guiController;
 		private ClientControl clientControl;
@@ -64,6 +67,8 @@ public class GuiControllerPrivat
 		{
 			this.empfaenger = empfaenger;
 		}
+
+		public Button getBtn_Senden(){return this.btn_Senden;}
 
 		public Stage getStage()
 		{

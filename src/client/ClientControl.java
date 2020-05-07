@@ -130,8 +130,12 @@ public class ClientControl implements Runnable
 						Spamblock block = (Spamblock) o;
 						guiController.getTextFieldNachricht().setDisable(true);
 						guiController.getBtnSenden().setDisable(true);
-
-
+						guiController.getListView_angemeldeteNutzer().setDisable(true);
+						for (GuiControllerPrivat c: privateChatraeume)
+						{
+							c.getBtn_Senden().setDisable(true);
+							c.getTextField_fluesterNachricht().setDisable(true);
+						}
 						Thread timer = new Thread(new Runnable() {
 							@Override
 							public void run() {
@@ -147,6 +151,14 @@ public class ClientControl implements Runnable
 
 								guiController.getTextFieldNachricht().setDisable(false);
 								guiController.getBtnSenden().setDisable(false);
+								guiController.getListView_angemeldeteNutzer().setDisable(false);
+
+								for (GuiControllerPrivat c: privateChatraeume)
+								{
+									c.getBtn_Senden().setDisable(false);
+									c.getTextField_fluesterNachricht().setDisable(false);
+								}
+
 							}
 						});
 						timer.start();
@@ -254,7 +266,6 @@ public class ClientControl implements Runnable
 
 	public void privateNachrichtSenden(Nickname empfaenger, GuiControllerPrivat gCP)
 	{
-		
 		PrivateNachricht pn = new PrivateNachricht(nickname, empfaenger, gCP.getTextField_fluesterNachricht().getText());
 		sendeObject(pn);
 		gCP.getList_fluesterNachricht().getItems().add(pn);
