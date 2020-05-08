@@ -3,10 +3,12 @@ package client;
 import javax.swing.*;
 
 import javafx.application.Platform;
+import javafx.scene.control.ScrollPane;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ClientControl implements Runnable
@@ -92,15 +94,8 @@ public class ClientControl implements Runnable
 				switch(t.getIdentifier())
 				{
 					case "Nachricht":
-						Nachricht n = (Nachricht) o;		
-						Platform.runLater(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								guiController.getListView_Nachrichten().getItems().add(n.getName() + ": " + n.getNachricht());
-							}
-						});
+						Nachricht n = (Nachricht) o;
+						guiController.itemsZurListeHinzufuegen(guiController.getListView_Nachrichten(), n);
 						break;
 					case "AnmeldeBestaetigung": 
 						AnmeldeBestaetigung a = (AnmeldeBestaetigung) o;
@@ -120,44 +115,54 @@ public class ClientControl implements Runnable
 					
 						if(anu.isHinzufuegen())
 						{
-							Platform.runLater(new Runnable()
-							{
-								@Override
-								public void run()
-								{
-									guiController.getListView_angemeldeteNutzer().getItems().add(anu.getNick());
-								}
-							});
+							guiController.itemsZurListeHinzufuegen(guiController.getListView_angemeldeteNutzer(), anu.getNick());
 						}
 						else
 						{
-							Platform.runLater(new Runnable()
-							{
-								@Override
-								public void run()
-								{
-									guiController.getListView_angemeldeteNutzer().getItems().remove(anu.getNick());
-								}
-							});
+							guiController.itemsVonListeEntfernen(guiController.getListView_angemeldeteNutzer(), anu.getNick());
 						}
 						break;
 					case "privateNachricht":
 						PrivateNachricht pn = (PrivateNachricht) o;
-						Platform.runLater(new Runnable()
+						guiController.itemsZurListeHinzufuegen(clientPrivatOeffnen(pn.getAbsender()).getList_fluesterNachricht(), pn);
+						break;
+					case "Spam":
+						Spamblock block = (Spamblock) o;
+						guiController.getTextFieldNachricht().setDisable(true);
+						guiController.getBtnSenden().setDisable(true);
+						guiController.getListView_angemeldeteNutzer().setDisable(true);
+						for (GuiControllerPrivat c: privateChatraeume)
 						{
+							c.getBtn_Senden().setDisable(true);
+							c.getTextField_fluesterNachricht().setDisable(true);
+						}
+						Thread timer = new Thread(new Runnable() {
 							@Override
-							public void run()
-							{
+							public void run() {
+								System.out.println("Bin im Thread!");
 								try
 								{
-									clientPrivatOeffnen(pn.getAbsender()).getList_fluesterNachricht().getItems().add(pn);
-								} catch (IOException e)
-								{
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+									Thread.sleep((block.getTimeout()*1000));
 								}
+								catch(InterruptedException exp)
+								{
+									exp.printStackTrace();
+								}
+
+								guiController.getTextFieldNachricht().setDisable(false);
+								guiController.getBtnSenden().setDisable(false);
+								guiController.getListView_angemeldeteNutzer().setDisable(false);
+
+								for (GuiControllerPrivat c: privateChatraeume)
+								{
+									c.getBtn_Senden().setDisable(false);
+									c.getTextField_fluesterNachricht().setDisable(false);
+								}
+
 							}
 						});
+						timer.start();
+
 						break;
 					default: break;
 				}
@@ -212,12 +217,12 @@ public class ClientControl implements Runnable
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null,"Passwörter stimmen nicht überein.","Fehler", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Passwï¿½rter stimmen nicht ï¿½berein.","Fehler", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null,"Bitte füllen Sie alle Felder aus.","Fehler", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Bitte fï¿½llen Sie alle Felder aus.","Fehler", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
@@ -233,7 +238,7 @@ public class ClientControl implements Runnable
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null,"Bitte füllen Sie alle Felder aus.","Fehler", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Bitte fï¿½llen Sie alle Felder aus.","Fehler", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -261,7 +266,6 @@ public class ClientControl implements Runnable
 
 	public void privateNachrichtSenden(Nickname empfaenger, GuiControllerPrivat gCP)
 	{
-		
 		PrivateNachricht pn = new PrivateNachricht(nickname, empfaenger, gCP.getTextField_fluesterNachricht().getText());
 		sendeObject(pn);
 		gCP.getList_fluesterNachricht().getItems().add(pn);

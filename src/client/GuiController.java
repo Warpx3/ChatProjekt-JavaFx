@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -147,6 +148,30 @@ public class GuiController
 		});
 		
 		return gCP;
+	}
+
+	public void itemsZurListeHinzufuegen(ListView listView, Object object)
+	{
+		Platform.runLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				listView.getItems().add(object);
+			}
+		});
+	}
+
+	public void itemsVonListeEntfernen(ListView listView, Object object)
+	{
+		Platform.runLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				listView.getItems().remove(object);
+			}
+		});
 	}
 	
 	//######### GETTER/SETTER ##########	
