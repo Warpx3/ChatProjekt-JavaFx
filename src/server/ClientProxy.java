@@ -139,6 +139,14 @@ public class ClientProxy implements Runnable
 	{
 		this.nick = nick;
 	}
-	
-	
+
+	public Socket getaSocket()
+	{
+		return aSocket;
+	}
+
+	public static int getBenutzer()
+	{
+		return benutzer;
+	}
 }
