@@ -10,7 +10,7 @@
     <children>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="356.0" layoutX="35.0" layoutY="72.0" stroke="#44acc9" strokeType="OUTSIDE" strokeWidth="1.6" width="472.0" />
         <Label layoutX="247.0" layoutY="227.0" prefHeight="25.0" prefWidth="74.0" text="Drag &amp; Drop" />
-        <ImageView fx:id="imageViewBild" fitHeight="359.0" fitWidth="475.0" layoutX="33.0" layoutY="72.0" onDragDropped="#handleDragDroppedBild" onDragOver="#handleDragOverBild" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="imageViewBild" fitHeight="359.0" fitWidth="469.0" layoutX="37.0" layoutY="72.0" onDragDropped="#handleDragDroppedBild" onDragOver="#handleDragOverBild" pickOnBounds="true" preserveRatio="true" />
         <Button fx:id="button_SendenBild" layoutX="366.0" layoutY="439.0" mnemonicParsing="false" onAction="#handleSendenBild" prefHeight="25.0" prefWidth="143.0" text="Senden" />
         <Label layoutX="33.0" layoutY="32.0" prefHeight="27.0" prefWidth="143.0" text="Füge ein Bild ein">
             <font>
