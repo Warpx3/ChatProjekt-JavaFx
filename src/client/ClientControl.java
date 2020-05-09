@@ -126,6 +126,27 @@ public class ClientControl implements Runnable
 						PrivateNachricht pn = (PrivateNachricht) o;
 						guiController.itemsZurListeHinzufuegen(clientPrivatOeffnen(pn.getAbsender()).getList_fluesterNachricht(), pn);
 						break;
+					case "Bild":
+						Bild bi = (Bild) o;
+						Platform.runLater(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								try
+								{
+									GuiControllerPrivat gCP = null;
+									gCP = guiController.stageAnlegen("AnzDnD", bi.getEmpfaenger());
+									gCP.getDndAnzeigenLabel().setText(bi.getAbsender() + " hat dir ein Bild gesendet:");
+									gCP.getDndAnzeigenContent().setImage(bi.byteArrayToImage());
+								} catch (IOException e)
+								{
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
+						break;
 					case "Spam":
 						Spamblock block = (Spamblock) o;
 						guiController.getTextFieldNachricht().setDisable(true);
@@ -269,6 +290,12 @@ public class ClientControl implements Runnable
 		PrivateNachricht pn = new PrivateNachricht(nickname, empfaenger, gCP.getTextField_fluesterNachricht().getText());
 		sendeObject(pn);
 		gCP.getList_fluesterNachricht().getItems().add(pn);
+	}
+
+	public void privateBilderSenden(Nickname empfaenger, Bild versendetesBild)
+	{
+
+		sendeObject(versendetesBild);
 	}
 	
 	public DefaultListModel<Nickname> convertArrayListToDefaultListModel(ArrayList<Nickname> arrayList)

@@ -1,11 +1,23 @@
 package client;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.control.Label;
+import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
 
 public class GuiControllerPrivat
@@ -17,6 +29,17 @@ public class GuiControllerPrivat
 		private ListView list_fluesterNachricht;
 		@FXML
 		private Button btn_Senden;
+		//Bild einfügen-GUI
+		@FXML
+		private ImageView imageViewBild;
+		//Temp. Variable für das Bild
+		private Image imgBild;
+		//Bild anzeigen-GUI
+		@FXML
+		private ImageView dndAnzeigenContent;
+		@FXML
+		private Label dndAnzeigenLabel;
+
 
 		private Nickname empfaenger;
 		private GuiController guiController;
@@ -80,4 +103,87 @@ public class GuiControllerPrivat
 			this.stage = stage;
 		}
 		//ClientPrivat-Ende
+
+	//Auswahl-Menü (Button [ + ] )
+	//Auswahl - Smiley einfügen
+	@FXML
+	private void handleMenuClicked1(ActionEvent event) throws IOException {
+		/*Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					guiController.stageAnlegen("DnDBild", empfaenger);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});*/
+
+	}
+
+	//Auswahl - Bild einfügen
+	@FXML
+	private void handleMenuClicked2(ActionEvent event) throws IOException {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					guiController.stageAnlegen("DnDBild", empfaenger);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
+
+	public void handleDragOverBild(DragEvent dragEvent) {
+		final Dragboard db = dragEvent.getDragboard();
+
+		final boolean isAccepted = db.getFiles().get(0).getName().toLowerCase().endsWith(".png")
+				|| db.getFiles().get(0).getName().toLowerCase().endsWith(".jpg");
+
+		if (db.hasFiles()) {
+			if (isAccepted) {
+				dragEvent.acceptTransferModes(TransferMode.COPY);
+			}
+		} else {
+			dragEvent.consume();
+		}
+
+	}
+
+	public void handleDragDroppedBild(DragEvent dragEvent) throws FileNotFoundException {
+		List<File> files = dragEvent.getDragboard().getFiles();
+		imgBild = new Image(new FileInputStream(files.get(0)));
+		imageViewBild.setImage(imgBild);
+	}
+
+	public void handleSendenBild(ActionEvent actionEvent) throws IOException {
+		if (imgBild != null) {
+			Bild versendetesBild = new Bild(clientControl.getNickname(), empfaenger);
+			versendetesBild.imageToByteArray(imgBild);
+			clientControl.privateBilderSenden(empfaenger, versendetesBild);
+		} else {
+			System.out.println("Drag&Drop: Kein Bild eingefügt");
+		}
+
+	}
+
+	//Getter und Setter für Bild anzeigen-GUI
+	public ImageView getDndAnzeigenContent() {
+		return dndAnzeigenContent;
+	}
+
+	public void setDndAnzeigenContent(ImageView dndAnzeigenContent) {
+		this.dndAnzeigenContent = dndAnzeigenContent;
+	}
+
+	public Label getDndAnzeigenLabel() {
+		return dndAnzeigenLabel;
+	}
+
+	public void setDndAnzeigenLabel(Label dndAnzeigenLabel) {
+		this.dndAnzeigenLabel = dndAnzeigenLabel;
+	}
 }

@@ -1,60 +1,69 @@
 package client;
 
+
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
-import java.io.Serializable;
 
-public class Bild extends Transport implements Serializable {
+public class Bild extends Transport implements Serializable
+{
     private static final long serialVersionUID = 1L;
-    private String nachricht;
-    private Image img;
+    private byte[] imgBytes;
     private Nickname absender;
     private Nickname empfaenger;
 
-    public Bild(Nickname absender, Nickname empfaenger, String nachricht, Image img) {
+
+
+    public Bild(Nickname absender, Nickname empfaenger)
+    {
         super("Bild");
         this.empfaenger = empfaenger;
         this.absender = absender;
-        this.nachricht = nachricht;
-        this.img = img;
     }
 
-    public Nickname getAbsender() {
+    public Nickname getAbsender()
+    {
         return absender;
     }
 
-    public void setAbsender(Nickname absender) {
+    public void setAbsender(Nickname absender)
+    {
         this.absender = absender;
     }
 
-    public Nickname getEmpfaenger() {
+    public Nickname getEmpfaenger()
+    {
         return empfaenger;
     }
 
-    public void setEmpfaenger(Nickname empfaenger) {
+    public void setEmpfaenger(Nickname empfaenger)
+    {
         this.empfaenger = empfaenger;
     }
 
-    public String getNachricht() {
-        return nachricht;
+    public byte[] getImgBytes() {
+        return imgBytes;
     }
 
-    public void setNachricht(String nachricht) {
-        this.nachricht = nachricht;
+    public void setImgBytes(byte[] imgBytes) {
+        this.imgBytes = imgBytes;
     }
 
-    public Image getImg() {
+    public void imageToByteArray(Image img) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(img, null);
+        ImageIO.write(bufferedImage, "jpg", bos);
+        imgBytes = bos.toByteArray();
+        bos.close();
+    }
+
+    public Image byteArrayToImage() throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(imgBytes);
+        BufferedImage bufferedImage = ImageIO.read(bis);
+        Image img = SwingFXUtils.toFXImage(bufferedImage, null);
         return img;
     }
-
-    public void setImg(Image img) {
-        this.img = img;
-    }
-
-    @Override
-    public String toString() {
-        return nachricht;
-    }
-
-
 }
