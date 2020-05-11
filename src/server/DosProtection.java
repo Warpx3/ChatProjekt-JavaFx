@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class DosProtection
 {
     //Check ob IP bereits vorhanden und max Anzahl an Nutzern
-    public boolean joinCheck (Socket socket, ArrayList<ClientProxy> liste)
+    public static boolean joinCheck (Socket socket, ArrayList<ClientProxy> liste)
     {
-        if(liste.isEmpty() == false)
+        if(!liste.isEmpty())
         {
             if(liste.get(0).getBenutzer() < 50)
             {
@@ -17,16 +17,12 @@ public class DosProtection
                     if(clientProxy.getaSocket().getInetAddress().equals(socket.getInetAddress()))
                     {
                         System.out.println(socket.getInetAddress() + " " + clientProxy.getaSocket().getInetAddress());
+
                         return false;
                     }
                 }
-
-                return true;
             }
-
-            return false;
         }
-
-        return false;
+        return true;
     }
 }
