@@ -186,10 +186,11 @@ public class ServerControl extends Thread implements Serializable
 					}
 				});
 				//Benutzer vorhanden, an Proxy senden
-					clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
-					clientproxy.setNick(nick);
-					notifyObserver(anu);
-					clientProxyListe.add(clientproxy);
+				clientProxyListe.add(clientproxy);
+				clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
+				clientproxy.setNick(nick);
+				notifyObserver(anu);
+
 			}
 		}
 	}
