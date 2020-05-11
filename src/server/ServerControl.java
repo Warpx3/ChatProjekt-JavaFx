@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class ServerControl extends Thread implements Serializable
 	private AktiveNutzer aktiveNutzer;
 	
 	private GuiServerController guiServerController;
+
 	
 	public ServerControl(GuiServerController guiServerController)
 	{
@@ -68,8 +70,10 @@ public class ServerControl extends Thread implements Serializable
 			try
 			{
 				sleep(100);
+
 				clientproxy = new ClientProxy(this,socket.accept());
-				clientProxyListe.add(clientproxy);
+
+
 			}
 			catch(SocketTimeoutException e)
 			{
@@ -168,7 +172,7 @@ public class ServerControl extends Thread implements Serializable
 		
 		for(Registrierung reg : registrierungsliste)
 		{			
-			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()))
+			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()) && DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe))
 			{
 				Nickname nick = new Nickname(reg.getEmail(), reg.getName());
 				AktiveNutzerUpdate anu = new AktiveNutzerUpdate(nick, true);
@@ -182,9 +186,10 @@ public class ServerControl extends Thread implements Serializable
 					}
 				});
 				//Benutzer vorhanden, an Proxy senden
-				clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
-				clientproxy.setNick(nick);
-				notifyObserver(anu);
+					clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
+					clientproxy.setNick(nick);
+					notifyObserver(anu);
+					clientProxyListe.add(clientproxy);
 			}
 		}
 	}
