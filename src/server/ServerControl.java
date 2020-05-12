@@ -175,7 +175,7 @@ public class ServerControl extends Thread implements Serializable
 		
 		for(Registrierung reg : registrierungsliste)
 		{			
-			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()) /*&& DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe)*/)
+			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()) && DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe))
 			{
 				anmeldedatenSindKorrekt = true;
 				for(Nickname nickTemp : angemeldeteNutzer)
