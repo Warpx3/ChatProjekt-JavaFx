@@ -19,6 +19,4 @@ public class AnmeldeBestaetigung extends Transport implements Serializable
 	{
 		return nickname;
 	}
-	
-	
 }

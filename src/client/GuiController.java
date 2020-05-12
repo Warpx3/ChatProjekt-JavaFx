@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -41,7 +42,7 @@ public class GuiController
 	@FXML
 	private TextField textField_emailadresseAnmelden;
 	@FXML
-	private TextField textField_passwortAnmelden;
+	private PasswordField passwordField_passwortAnmelden;
 
 	// Registrieren-GUI
 	@FXML
@@ -49,9 +50,9 @@ public class GuiController
 	@FXML
 	private TextField textField_emailadresseRegistrieren;
 	@FXML
-	private TextField textField_passwortRegistrieren;
+	private PasswordField passwordField_passwortRegistrieren;
 	@FXML
-	private TextField textField_passwortWiederholenRegistrieren;
+	private PasswordField passwordField_passwortWiederholenRegistrieren;
 	
 	@FXML
 	private FXMLLoader loader;
@@ -243,24 +244,25 @@ public class GuiController
 		this.textField_emailadresseRegistrieren = textField_emailadresseRegistrieren;
 	}
 
-	public TextField getTextField_passwortRegistrieren()
+	public PasswordField getPasswordField_passwortRegistrieren()
 	{
-		return textField_passwortRegistrieren;
+		return passwordField_passwortRegistrieren;
 	}
 
-	public void setTextField_passwortRegistrieren(TextField textField_passwortRegistrieren)
+	public void setPasswordField_passwortRegistrieren(PasswordField passwordField_passwortRegistrieren)
 	{
-		this.textField_passwortRegistrieren = textField_passwortRegistrieren;
+		this.passwordField_passwortRegistrieren = passwordField_passwortRegistrieren;
 	}
 
-	public TextField getTextField_passwortWiederholenRegistrieren()
+	public PasswordField getPasswordField_passwortWiederholenRegistrieren()
 	{
-		return textField_passwortWiederholenRegistrieren;
+		return passwordField_passwortWiederholenRegistrieren;
 	}
 
-	public void setTextField_passwortWiederholenRegistrieren(TextField textField_passwortWiederholenRegistrieren)
+	public void setPasswordField_passwortWiederholenRegistrieren(
+			PasswordField passwordField_passwortWiederholenRegistrieren)
 	{
-		this.textField_passwortWiederholenRegistrieren = textField_passwortWiederholenRegistrieren;
+		this.passwordField_passwortWiederholenRegistrieren = passwordField_passwortWiederholenRegistrieren;
 	}
 	//Registrieren-Ende
 	
@@ -275,17 +277,16 @@ public class GuiController
 		this.textField_emailadresseAnmelden = textField_emailadresseAnmelden;
 	}
 
-	public TextField getTextField_passwortAnmelden()
+	public PasswordField getPasswordField_passwortAnmelden()
 	{
-		return textField_passwortAnmelden;
+		return passwordField_passwortAnmelden;
 	}
 
-	public void setTextField_passwortAnmelden(TextField textField_passwortAnmelden)
+	public void setPasswordField_passwortAnmelden(PasswordField passwordField_passwortAnmelden)
 	{
-		this.textField_passwortAnmelden = textField_passwortAnmelden;
+		this.passwordField_passwortAnmelden = passwordField_passwortAnmelden;
 	}
 	//Anmelden-Ende
-	
 	public void setLoader(FXMLLoader loader)
 	{
 		this.loader = loader;

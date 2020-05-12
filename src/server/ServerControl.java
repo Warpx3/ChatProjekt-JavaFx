@@ -159,6 +159,9 @@ public class ServerControl extends Thread implements Serializable
 	
 	public void anmelden(AnmeldeObjekt ao)
 	{
+		boolean istSchonAngemeldet = false;
+		boolean anmeldedatenSindKorrekt = false;
+		
 		//Deserialisierung
 		try(FileInputStream fis = new FileInputStream("datei.ser");
 				ObjectInputStream ois = new ObjectInputStream(fis))
@@ -172,26 +175,41 @@ public class ServerControl extends Thread implements Serializable
 		
 		for(Registrierung reg : registrierungsliste)
 		{			
-			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()) && DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe))
+			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()) /*&& DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe)*/)
 			{
-				Nickname nick = new Nickname(reg.getEmail(), reg.getName());
-				AktiveNutzerUpdate anu = new AktiveNutzerUpdate(nick, true);
-				
-				Platform.runLater(new Runnable()
+				anmeldedatenSindKorrekt = true;
+				for(Nickname nickTemp : angemeldeteNutzer)
 				{
-					@Override
-					public void run()
+					if(ao.getEmail().equals(nickTemp.getEmail()))
 					{
-						guiServerController.getList_angemeldeteUser().getItems().add(nick);
+						istSchonAngemeldet = true;
+						clientproxy.sendeObject(new Heuler("Dieser Nutzer ist bereits angemeldet!", nickTemp));
 					}
-				});
-				//Benutzer vorhanden, an Proxy senden
-				clientProxyListe.add(clientproxy);
-				clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
-				clientproxy.setNick(nick);
-				notifyObserver(anu);
-
+				}
+				if(!istSchonAngemeldet)
+				{
+					Nickname nick = new Nickname(reg.getEmail(), reg.getName());
+					AktiveNutzerUpdate anu = new AktiveNutzerUpdate(nick, true);
+					
+					Platform.runLater(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							guiServerController.getList_angemeldeteUser().getItems().add(nick);
+						}
+					});
+					//Benutzer vorhanden, an Proxy senden
+					clientProxyListe.add(clientproxy);
+					clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
+					clientproxy.setNick(nick);
+					notifyObserver(anu);
+				}
 			}
+		}
+		if(!anmeldedatenSindKorrekt)
+		{
+			clientproxy.sendeObject(new Heuler("Email oder Passwort stimmen nicht überein!", null));
 		}
 	}
 	

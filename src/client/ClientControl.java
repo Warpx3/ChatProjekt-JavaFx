@@ -183,7 +183,10 @@ public class ClientControl implements Runnable
 							}
 						});
 						timer.start();
-
+						break;
+					case "Heuler":
+						Heuler heuler = (Heuler) o;
+						JOptionPane.showMessageDialog(null, heuler.getNachricht(), "Fehler", JOptionPane.PLAIN_MESSAGE);
 						break;
 					default: break;
 				}
@@ -220,8 +223,8 @@ public class ClientControl implements Runnable
 
 	public void registrieren()
 	{
-		String pw = guiController.getTextField_passwortRegistrieren().getText();
-		String pwBestaetigung = guiController.getTextField_passwortWiederholenRegistrieren().getText();
+		String pw = guiController.getPasswordField_passwortRegistrieren().getText();
+		String pwBestaetigung = guiController.getPasswordField_passwortWiederholenRegistrieren().getText();
 		String nickname = guiController.getTextField_nicknameRegistrieren().getText();
 		String email = guiController.getTextField_emailadresseRegistrieren().getText();
 		
@@ -238,18 +241,18 @@ public class ClientControl implements Runnable
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null,"Passwï¿½rter stimmen nicht ï¿½berein.","Fehler", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Passwörter stimmen nicht überein.","Fehler", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null,"Bitte fï¿½llen Sie alle Felder aus.","Fehler", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Bitte füllen Sie alle Felder aus.","Fehler", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
 	public void clientAnmelden()
 	{
-		String pw = guiController.getTextField_passwortAnmelden().getText();
+		String pw = guiController.getPasswordField_passwortAnmelden().getText();
 		String email = guiController.getTextField_emailadresseAnmelden().getText();
 		
 		if(pw != null && email != null)
