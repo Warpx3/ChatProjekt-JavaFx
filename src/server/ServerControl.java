@@ -175,7 +175,7 @@ public class ServerControl extends Thread implements Serializable
 		
 		for(Registrierung reg : registrierungsliste)
 		{			
-			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()) && DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe))
+			if(reg.getEmail().equals(ao.getEmail()) && reg.getPasswort().equals(ao.getPasswort()))
 			{
 				anmeldedatenSindKorrekt = true;
 				for(Nickname nickTemp : angemeldeteNutzer)
@@ -185,6 +185,11 @@ public class ServerControl extends Thread implements Serializable
 						istSchonAngemeldet = true;
 						clientproxy.sendeObject(new Heuler("Dieser Nutzer ist bereits angemeldet!", nickTemp));
 					}
+				}
+				if(!DosProtection.joinCheck(clientproxy.getaSocket(), clientProxyListe))
+				{
+					clientproxy.sendeObject(new Heuler("Ihr Rechner ist bereits angemeldet", null));
+					istSchonAngemeldet = true;
 				}
 				if(!istSchonAngemeldet)
 				{
@@ -255,6 +260,7 @@ public class ServerControl extends Thread implements Serializable
 				{
 					if(((Nickname)guiServerController.getList_angemeldeteUser().getItems().get(i)).getEmail().equalsIgnoreCase(email))
 					{
+						angemeldeteNutzer.remove(i);
 						guiServerController.getList_angemeldeteUser().getItems().remove(i);
 					}
 				}
