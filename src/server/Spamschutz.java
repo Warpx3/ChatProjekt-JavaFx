@@ -71,5 +71,4 @@ public class Spamschutz
     {
         anzahlNachrichten = 0;
     }
-
 }

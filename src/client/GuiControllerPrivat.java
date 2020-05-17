@@ -18,6 +18,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.control.Label;
 import javafx.scene.input.TransferMode;
+import javafx.scene.control.Menu;
 import javafx.stage.Stage;
 
 public class GuiControllerPrivat
@@ -39,12 +40,14 @@ public class GuiControllerPrivat
 		private ImageView dndAnzeigenContent;
 		@FXML
 		private Label dndAnzeigenLabel;
-
+		@FXML
+		private Menu mMain;
 
 		private Nickname empfaenger;
 		private GuiController guiController;
 		private ClientControl clientControl;
 		private Stage stage;
+		private int counter;
 		
 		public GuiControllerPrivat(Nickname empfaenger, GuiController guiController, ClientControl clientControl) throws IOException
 		{
@@ -167,7 +170,17 @@ public class GuiControllerPrivat
 		} else {
 			System.out.println("Drag&Drop: Kein Bild eingefügt");
 		}
+	}
 
+	@FXML
+	public void aktivCheck()
+	{
+		counter++;
+		if(counter%500 == 0)
+		{
+			clientControl.sendeObject(new AktivitaetsCheck());
+			counter = 0;
+		}
 	}
 
 	//Getter und Setter für Bild anzeigen-GUI
@@ -186,4 +199,5 @@ public class GuiControllerPrivat
 	public void setDndAnzeigenLabel(Label dndAnzeigenLabel) {
 		this.dndAnzeigenLabel = dndAnzeigenLabel;
 	}
+	public Menu getmMain(){return this.mMain;}
 }

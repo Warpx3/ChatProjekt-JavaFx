@@ -89,6 +89,7 @@ public class ServerControl extends Thread implements Serializable
 				try
 				{
 					clientProxyListe.forEach(proxys->{
+						proxys.aktivCheck.interrupt();
 						proxys.t.interrupt();
 					});
 					socket.close();
@@ -209,6 +210,10 @@ public class ServerControl extends Thread implements Serializable
 					clientproxy.sendeObject(new AnmeldeBestaetigung(true, nick));
 					clientproxy.setNick(nick);
 					notifyObserver(anu);
+
+					//AktivKontrolle Start
+					clientproxy.setAktivCheck(new AktivKontrolle(clientproxy,5));
+					clientproxy.getAktivCheck().start();
 				}
 			}
 		}

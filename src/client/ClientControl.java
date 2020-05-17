@@ -149,18 +149,18 @@ public class ClientControl implements Runnable
 						break;
 					case "Spam":
 						Spamblock block = (Spamblock) o;
-						guiController.getTextFieldNachricht().setDisable(true);
-						guiController.getBtnSenden().setDisable(true);
-						guiController.getListView_angemeldeteNutzer().setDisable(true);
+
+						disableClientEventFields();
+
 						for (GuiControllerPrivat c: privateChatraeume)
 						{
 							c.getBtn_Senden().setDisable(true);
 							c.getTextField_fluesterNachricht().setDisable(true);
+							c.getmMain().setDisable(true);
 						}
 						Thread timer = new Thread(new Runnable() {
 							@Override
 							public void run() {
-								System.out.println("Bin im Thread!");
 								try
 								{
 									Thread.sleep((block.getTimeout()*1000));
@@ -170,14 +170,13 @@ public class ClientControl implements Runnable
 									exp.printStackTrace();
 								}
 
-								guiController.getTextFieldNachricht().setDisable(false);
-								guiController.getBtnSenden().setDisable(false);
-								guiController.getListView_angemeldeteNutzer().setDisable(false);
+								enableClientEventFields();
 
 								for (GuiControllerPrivat c: privateChatraeume)
 								{
 									c.getBtn_Senden().setDisable(false);
 									c.getTextField_fluesterNachricht().setDisable(false);
+									c.getmMain().setDisable(false);
 								}
 
 							}
@@ -187,6 +186,10 @@ public class ClientControl implements Runnable
 					case "Heuler":
 						Heuler heuler = (Heuler) o;
 						JOptionPane.showMessageDialog(null, heuler.getNachricht(), "Fehler", JOptionPane.PLAIN_MESSAGE);
+						break;
+					case "aktivCheck":
+						disableClientEventFields();
+						guiController.getTextFieldNachricht().setText("Verbindung wegen Inaktivität getrennt. Bitte neu Starten!");
 						break;
 					default: break;
 				}
@@ -311,6 +314,19 @@ public class ClientControl implements Runnable
 		}
 		
 		return modelAktiveNicks;
+	}
+
+	public void disableClientEventFields()
+	{
+		guiController.getTextFieldNachricht().setDisable(true);
+		guiController.getBtnSenden().setDisable(true);
+		guiController.getListView_angemeldeteNutzer().setDisable(true);
+	}
+	public void enableClientEventFields()
+	{
+		guiController.getTextFieldNachricht().setDisable(false);
+		guiController.getBtnSenden().setDisable(false);
+		guiController.getListView_angemeldeteNutzer().setDisable(false);
 	}
 
 	public Nickname getNickname()

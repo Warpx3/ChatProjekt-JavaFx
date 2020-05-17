@@ -5,10 +5,10 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="list_fluesterNachricht" layoutX="14.0" layoutY="14.0" prefHeight="339.0" prefWidth="571.0" />
-      <TextField fx:id="textField_fluesterNachricht" layoutX="58.0" layoutY="361.0" onAction="#privateNachrichtSenden" prefHeight="25.0" prefWidth="424.0" promptText="Private Nachricht" />
-      <Button fx:id="btn_Senden" layoutX="487.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#privateNachrichtSenden" prefHeight="25.0" prefWidth="98.0" text="Senden" />
-      <MenuBar layoutX="14.0" layoutY="361.0" prefHeight="25.0" prefWidth="35.0">
+      <ListView fx:id="list_fluesterNachricht" onMouseMoved="#aktivCheck" layoutX="14.0" layoutY="14.0" prefHeight="339.0" prefWidth="571.0" />
+      <TextField fx:id="textField_fluesterNachricht" onMouseMoved="#aktivCheck" layoutX="58.0" layoutY="361.0" onAction="#privateNachrichtSenden" prefHeight="25.0" prefWidth="424.0" promptText="Private Nachricht" />
+      <Button fx:id="btn_Senden" layoutX="487.0" layoutY="361.0" onMouseMoved="#aktivCheck" mnemonicParsing="false" onMouseClicked="#privateNachrichtSenden" prefHeight="25.0" prefWidth="98.0" text="Senden" />
+      <MenuBar layoutX="14.0" onMouseMoved="#aktivCheck" layoutY="361.0" prefHeight="25.0" prefWidth="35.0">
          <Menu fx:id="mMain" text="+">
             <MenuItem onAction="#handleMenuClicked1" text="Syiley einfügen" />
             <MenuItem onAction="#handleMenuClicked2" text="Bild einfügen" />

@@ -19,8 +19,9 @@ public class ClientProxy implements Runnable
 	private AnmeldeObjekt ao;
 	private Spamschutz schutz;
 	protected Thread t;
+	protected Thread aktivCheck;
+	private boolean aktivFlag;
 	static int benutzer = 0;
-	
 	
 	public ClientProxy(ServerControl control,Socket s)
 	{
@@ -52,7 +53,6 @@ public class ClientProxy implements Runnable
 
 		schutz = new Spamschutz();
 
-
 		while(!t.isInterrupted())
 		{
 			try
@@ -77,7 +77,7 @@ public class ClientProxy implements Runnable
 			if(t != null)
 			{
 				//Dazu da um das Zeitfenster für den Spamschutz zu starten.
-				if(!t.getIdentifier().equalsIgnoreCase("Registrierung") && !t.getIdentifier().equalsIgnoreCase("AnmeldeObjekt"))
+				if(!t.getIdentifier().equalsIgnoreCase("Registrierung") && !t.getIdentifier().equalsIgnoreCase("AnmeldeObjekt") && !t.getIdentifier().equalsIgnoreCase("aktivCheck"))
 				{
 					if (schutz.getAnzahl() == 0)
 					{
@@ -86,7 +86,7 @@ public class ClientProxy implements Runnable
 				}
 				//if-else für eine einfachere Spaltung von Nachrichtenobjekte jeglicher Art wie z.b Nachrichten, Bilder, Gif,..(in else) und Anmelde und Registrierungsobjekte
 				//Damit entsteht keine Redundanz mehr für die Prüfung des Spamschutzes
-				if(t.getIdentifier().equalsIgnoreCase("Registrierung") || t.getIdentifier().equalsIgnoreCase("AnmeldeObjekt"))
+				if(t.getIdentifier().equalsIgnoreCase("Registrierung") || t.getIdentifier().equalsIgnoreCase("AnmeldeObjekt") || t.getIdentifier().equalsIgnoreCase("aktivCheck"))
 				{
 					switch(t.getIdentifier())
 					{
@@ -97,6 +97,10 @@ public class ClientProxy implements Runnable
 						case "AnmeldeObjekt":
 							ao = (AnmeldeObjekt) o;
 							aServer.anmelden(ao);
+
+							break;
+						case "aktivCheck":
+							aktivFlag = true;
 							break;
 						default: break;
 					}
@@ -105,6 +109,7 @@ public class ClientProxy implements Runnable
 				{
 					if(schutz.checkErlaubt())
 					{
+						aktivFlag = true;
 						switch(t.getIdentifier())
 						{
 							case "Nachricht":
@@ -127,7 +132,6 @@ public class ClientProxy implements Runnable
 						aServer.spamschutzNachricht(block,this);
 					}
 				}
-
 			}
 		}
 		catch (ClassNotFoundException | IOException e)
@@ -160,6 +164,25 @@ public class ClientProxy implements Runnable
 		}
 	}
 
+	public void clientKick()
+	{
+		sendeObject(new AktivitaetsCheck());
+
+		AktiveNutzerUpdate anu = new AktiveNutzerUpdate(nick, false);
+
+		if(nick != null)
+		{
+			aServer.aktivenBenutzerEntfernen(nick.getEmail());
+		}
+		else
+		{
+			aServer.aktivenBenutzerEntfernen(ao.getEmail());
+		}
+		aServer.notifyObserver(anu);
+
+		this.t.interrupt();
+	}
+
 
 	public Nickname getNick()
 	{
@@ -172,13 +195,13 @@ public class ClientProxy implements Runnable
 		this.nick = nick;
 	}
 
-	public Socket getaSocket()
-	{
-		return aSocket;
-	}
+	public Socket getaSocket(){return aSocket;}
+	public static int getBenutzer(){return benutzer;}
 
-	public static int getBenutzer()
-	{
-		return benutzer;
-	}
+	public boolean getAktivFlag(){return this.aktivFlag;}
+	public void setAktivFlag(boolean flag){this.aktivFlag = flag;}
+
+	public void setAktivCheck(Thread t){this.aktivCheck = t;}
+	public Thread getAktivCheck(){return this.aktivCheck;}
+	
 }

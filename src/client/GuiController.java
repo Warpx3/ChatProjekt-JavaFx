@@ -22,6 +22,8 @@ import java.util.ResourceBundle;
 
 public class GuiController
 {
+	//Variable zum verschicken einer Aktivität
+	int counter = 0;
 	// Chat-GUI
 	@FXML
 	private TextField textFieldNachricht;
@@ -173,6 +175,17 @@ public class GuiController
 				listView.getItems().remove(object);
 			}
 		});
+	}
+	//Aktivitätscheck
+	@FXML
+	public void aktivCheck()
+	{
+		counter++;
+		if(counter%500 == 0)
+		{
+			control.sendeObject(new AktivitaetsCheck());
+			counter = 0;
+		}
 	}
 	
 	//######### GETTER/SETTER ##########	
